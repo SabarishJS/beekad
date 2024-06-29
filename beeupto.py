@@ -210,6 +210,7 @@ if uploaded_file:
 
         fig, ax = plt.subplots()
         ax.imshow(img)
+        ax.axis('off')  # Turn off the axes
 
         # Plot each ball in the filtered data
         for index, row in filtered_data.iterrows():
