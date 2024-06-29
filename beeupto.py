@@ -129,7 +129,7 @@ if uploaded_file:
 
     # Batsman filter
     batsman_names = ['All'] + list(filtered_data['StrikerName'].unique())
-    selected_batsman_name = st.multiselectbox("Select the batsman's name", options=batsman_names)
+    selected_batsman_name = st.selectbox("Select the batsman's name", options=batsman_names)
     if selected_batsman_name != 'All':
         filtered_data = filtered_data[filtered_data['StrikerName'] == selected_batsman_name]
     st.write(f"Data after batsman filter: {filtered_data.shape[0]} rows")
