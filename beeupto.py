@@ -128,10 +128,10 @@ if uploaded_file:
     st.write(f"Data after match filter: {filtered_data.shape[0]} rows")
 
     # Batsman filter
-    batsman_names = ['All'] + list(filtered_data['StrikerName'].unique())
-    selected_batsman_name = st.selectbox("Select the batsman's name", options=batsman_names)
-    if selected_batsman_name != 'All':
-        filtered_data = filtered_data[filtered_data['StrikerName'] == selected_batsman_name]
+    batsman_names = list(filtered_data['StrikerName'].unique())
+    selected_batsman_names = st.multiselect("Select the batsman's names", options=batsman_names)
+    if selected_batsman_names:
+        filtered_data = filtered_data[filtered_data['StrikerName'].isin(selected_batsman_names)]
     st.write(f"Data after batsman filter: {filtered_data.shape[0]} rows")
 
     # Pace or Spin filter
@@ -202,22 +202,26 @@ if uploaded_file:
 
     # Ensure filtered_data is not empty before accessing its elements
     if not filtered_data.empty:
-        # Read the image corresponding to the batsman's batting type
-        batsman_batting_type = filtered_data['StrikerBattingType'].iloc[0]
-        image_path = image_paths[str(batsman_batting_type)]
-        img = plt.imread(image_path)
-        height, width, _ = img.shape
+        for batsman_name in selected_batsman_names:
+            batsman_data = filtered_data[filtered_data['StrikerName'] == batsman_name]
+            if not batsman_data.empty:
+                # Read the image corresponding to the batsman's batting type
+                batsman_batting_type = batsman_data['StrikerBattingType'].iloc[0]
+                image_path = image_paths[str(batsman_batting_type)]
+                img = plt.imread(image_path)
+                height, width, _ = img.shape
 
-        fig, ax = plt.subplots()
-        ax.imshow(img)
-        ax.axis('off')  # Turn off the axes
+                fig, ax = plt.subplots()
+                ax.imshow(img)
+                ax.axis('off')  # Turn off the axes
 
-        # Plot each ball in the filtered data
-        for index, row in filtered_data.iterrows():
-            ball_type = determine_ball_type(row)
-            if ball_type:
-                plot_balls(row['HeightX'], row['HeightY'], row['StrikerBattingType'], ball_type)
+                # Plot each ball in the batsman's data
+                for index, row in batsman_data.iterrows():
+                    ball_type = determine_ball_type(row)
+                    if ball_type:
+                        plot_balls(row['HeightX'], row['HeightY'], row['StrikerBattingType'], ball_type)
 
-        st.pyplot(fig)
+                st.write(f"Plot for {batsman_name}")
+                st.pyplot(fig)
     else:
         st.write("No data available for the selected filters.")
