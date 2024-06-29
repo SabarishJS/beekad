@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
+import zipfile
+import os
 
 # Define the regions and conditions for plotting the balls
 OldRegStartSS_Y = 189
@@ -202,6 +204,11 @@ if uploaded_file:
 
     # Ensure filtered_data is not empty before accessing its elements
     if not filtered_data.empty:
+        # Create a directory to save the images
+        os.makedirs("plots", exist_ok=True)
+
+        zipf = zipfile.ZipFile("batsman_plots.zip", 'w', zipfile.ZIP_DEFLATED)
+
         for batsman_name in selected_batsman_names:
             batsman_data = filtered_data[filtered_data['StrikerName'] == batsman_name]
             if not batsman_data.empty:
@@ -221,7 +228,17 @@ if uploaded_file:
                     if ball_type:
                         plot_balls(row['HeightX'], row['HeightY'], row['StrikerBattingType'], ball_type)
 
-                st.write(f"Plot for {batsman_name}")
-                st.pyplot(fig)
+                plt.title(batsman_name)
+                plt.savefig(f"plots/{batsman_name}.png")
+                plt.close(fig)
+
+                # Add the image to the zip file
+                zipf.write(f"plots/{batsman_name}.png", arcname=f"{batsman_name}.png")
+
+        zipf.close()
+
+        # Provide download link for the zip file
+        with open("batsman_plots.zip", "rb") as f:
+            st.download_button("Download all plots as ZIP", f, "batsman_plots.zip")
     else:
         st.write("No data available for the selected filters.")
