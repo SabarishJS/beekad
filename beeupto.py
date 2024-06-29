@@ -93,6 +93,11 @@ if uploaded_file:
     data['Date'] = pd.to_datetime(data['date'], dayfirst=True)
     start_date = st.date_input("Start date", value=data['Date'].min())
     end_date = st.date_input("End date", value=data['Date'].max())
+    
+    # Convert start_date and end_date to datetime64[ns]
+    start_date = pd.to_datetime(start_date)
+    end_date = pd.to_datetime(end_date)
+    
     filtered_data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
     st.write(f"Data after date filter: {filtered_data.shape[0]} rows")
 
@@ -165,13 +170,14 @@ if uploaded_file:
         phase_options = ["All", 1, 2, 3]
         selected_phase = st.selectbox("Select Phase", options=phase_options)
         if selected_phase != "All":
-            filtered_data = filtered_data[filtered_data['Phase3idStar'] == int(selected_phase)]
-    elif phase_type == "4Phase":
+            filtered_data = filtered_data[filtered_data['PhaseofInngs'] == selected_phase]
+    else:
         phase_options = ["All", 1, 2, 3, 4]
         selected_phase = st.selectbox("Select Phase", options=phase_options)
         if selected_phase != "All":
-            filtered_data = filtered_data[filtered_data['Phase4idStar'] == int(selected_phase)]
+            filtered_data = filtered_data[filtered_data['PhaseofInngs'] == selected_phase]
     st.write(f"Data after phase filter: {filtered_data.shape[0]} rows")
+
 
     # Run types filter
     run_type_columns = ['1s', '2s', '3s', '0s', 'Batwkts', '4s', '6s']
