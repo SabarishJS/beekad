@@ -240,5 +240,12 @@ if uploaded_file:
         # Provide download link for the zip file
         with open("batsman_plots.zip", "rb") as f:
             st.download_button("Download all plots as ZIP", f, "batsman_plots.zip")
+
+        # Display preview of the images
+        st.write("Preview of the plots:")
+        for batsman_name in selected_batsman_names:
+            batsman_data = filtered_data[filtered_data['StrikerName'] == batsman_name]
+            if not batsman_data.empty:
+                st.image(f"plots/{batsman_name}.png", caption=batsman_name)
     else:
         st.write("No data available for the selected filters.")
