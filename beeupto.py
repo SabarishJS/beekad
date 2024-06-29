@@ -76,6 +76,11 @@ def determine_ball_type(row):
     else:
         return None
 
+def filter_data_by_phase(data, phase_column, phase_value):
+    if phase_value == "All":
+        return data
+    return data[data[phase_column] == phase_value]
+
 image_paths = {
     '1': 'bee_r.jpg',
     '2': 'bee_l.jpg'
