@@ -164,20 +164,22 @@ if uploaded_file:
             filtered_data = filtered_data[filtered_data['BowlingTypeGroup'].isin(bowling_type_values)]
     st.write(f"Data after bowling type group filter: {filtered_data.shape[0]} rows")
 
-    # Phase selection
-    phase_type = st.selectbox("Select phase type", options=["3Phase", "4Phase"])
-    if phase_type == "3Phase":
-        phase_options = ["All", 1, 2, 3]
-        selected_phase = st.selectbox("Select Phase", options=phase_options)
-        if selected_phase != "All":
-            filtered_data = filtered_data[filtered_data['PhaseofInngs'] == selected_phase]
+    # Verify 'Phase3idStar' and 'Phase4id' columns exist before proceeding
+    if 'Phase3idStar' in filtered_data.columns and 'Phase4id' in filtered_data.columns:
+        # Phase selection
+        phase_type = st.selectbox("Select phase type (3Phase/4Phase):", ["3Phase", "4Phase"])
+        if phase_type == "3Phase":
+            phase_options = ["All", 1, 2, 3]
+            selected_phase = st.selectbox("Select Phase:", phase_options, index=0)
+            filtered_data = filter_data_by_phase(filtered_data, 'Phase3idStar', selected_phase)
+        elif phase_type == "4Phase":
+            phase_options = ["All", 1, 2, 3, 4]
+            selected_phase = st.selectbox("Select Phase:", phase_options, index=0)
+            filtered_data = filter_data_by_phase(filtered_data, 'Phase4id', selected_phase)
     else:
-        phase_options = ["All", 1, 2, 3, 4]
-        selected_phase = st.selectbox("Select Phase", options=phase_options)
-        if selected_phase != "All":
-            filtered_data = filtered_data[filtered_data['PhaseofInngs'] == selected_phase]
+        st.error("Phase columns 'Phase3idStar' or 'Phase4id' not found in the data.")
+    
     st.write(f"Data after phase filter: {filtered_data.shape[0]} rows")
-
 
     # Run types filter
     run_type_columns = ['1s', '2s', '3s', '0s', 'Batwkts', '4s', '6s']
