@@ -94,7 +94,7 @@ st.title("Cricket Ball Trajectory Plotter")
 # Upload CSV file
 
 def main():
-    data = pd.read_csv(NewData)
+    data = pd.read_csv('NewData.csv')
 
     # Date filter
     data['Date'] = pd.to_datetime(data['date'], dayfirst=True)
