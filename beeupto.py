@@ -92,9 +92,9 @@ image_paths = {
 st.title("Cricket Ball Trajectory Plotter")
 
 # Upload CSV file
-uploaded_file = st.file_uploader("Upload CSV file", type="csv")
+
 if uploaded_file:
-    data = pd.read_csv(uploaded_file)
+    data = pd.read_csv('NewData.csv')
 
     # Date filter
     data['Date'] = pd.to_datetime(data['date'], dayfirst=True)
