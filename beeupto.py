@@ -61,16 +61,16 @@ def get_ball_color(ball_type):
     return colors.get(ball_type, 'gray')  # Default color for unknown types
 
 def determine_ball_type(row):
-    if row['1s'] == 1:
+    if row['Batwkts'] == 1:
+        return 'Batwkts'
+    elif row['0s'] == 1:
+        return '0s'
+    elif row['1s'] == 1:
         return '1s'
     elif row['2s'] == 1:
         return '2s'
     elif row['3s'] == 1:
         return '3s'
-    elif row['0s'] == 1:
-        return '0s'
-    elif row['Batwkts'] == 1:
-        return 'Batwkts'
     elif row['4s'] == 1:
         return '4s'
     elif row['6s'] == 1:
