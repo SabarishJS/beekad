@@ -92,7 +92,7 @@ image_paths = {
 st.title("Cricket Ball Trajectory Plotter")
 
 # Upload CSV file
-uploaded_file = st.file_uploader("Upload CSV file", type="csv")
+uploaded_file = 'NewData.csv'
 if uploaded_file:
     data = pd.read_csv(uploaded_file)
 
