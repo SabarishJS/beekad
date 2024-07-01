@@ -61,16 +61,16 @@ def get_ball_color(ball_type):
     return colors.get(ball_type, 'gray')  # Default color for unknown types
 
 def determine_ball_type(row):
-    if row['Batwkts'] == 1:
-        return 'Batwkts'
-    elif row['0s'] == 1:
-        return '0s'
-    elif row['1s'] == 1:
+    if row['1s'] == 1:
         return '1s'
     elif row['2s'] == 1:
         return '2s'
     elif row['3s'] == 1:
         return '3s'
+    elif row['0s'] == 1:
+        return '0s'
+    elif row['Batwkts'] == 1:
+        return 'Batwkts'
     elif row['4s'] == 1:
         return '4s'
     elif row['6s'] == 1:
@@ -92,9 +92,9 @@ image_paths = {
 st.title("Cricket Ball Trajectory Plotter")
 
 # Upload CSV file
-
-def main():
-    data = pd.read_csv('NewData.csv')
+uploaded_file = st.file_uploader("Upload CSV file", type="csv")
+if uploaded_file:
+    data = pd.read_csv(uploaded_file)
 
     # Date filter
     data['Date'] = pd.to_datetime(data['date'], dayfirst=True)
@@ -249,6 +249,3 @@ def main():
                 st.image(f"plots/{batsman_name}.png", caption=batsman_name)
     else:
         st.write("No data available for the selected filters.")
-
-if __name__ == "__main__":
-    main()
