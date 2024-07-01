@@ -97,16 +97,11 @@ if uploaded_file:
     data = pd.read_csv(uploaded_file)
 
     # Date filter
-    data['Date'] = pd.to_datetime(data['date'], dayfirst=True)
-    start_date = st.date_input("Start date", value=data['Date'].min())
-    end_date = st.date_input("End date", value=data['Date'].max())
+    data['Date'] = pd.to_datetime(data['date'])
     
-    # Convert start_date and end_date to datetime64[ns]
-    start_date = pd.to_datetime(start_date)
-    end_date = pd.to_datetime(end_date)
-    
-    filtered_data = data[(data['Date'] >= start_date) & (data['Date'] <= end_date)]
-    st.write(f"Data after date filter: {filtered_data.shape[0]} rows")
+    # Date range filter
+    start_date, end_date = st.date_input("Select date range:", [data['Date'].min(), data['Date'].max()])
+    filtered_data = data[(data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))]
 
     # Competition filter
     competitions = list(filtered_data['CompName'].unique())
