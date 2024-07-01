@@ -92,8 +92,9 @@ image_paths = {
 st.title("Cricket Ball Trajectory Plotter")
 
 # Upload CSV file
-def main():
-    data = pd.read_csv('NewData.csv')
+uploaded_file = st.file_uploader("Upload CSV file", type="csv")
+if uploaded_file:
+    data = pd.read_csv(uploaded_file)
 
     # Date filter
     data['Date'] = pd.to_datetime(data['date'], dayfirst=True)
@@ -248,5 +249,3 @@ def main():
                 st.image(f"plots/{batsman_name}.png", caption=batsman_name)
     else:
         st.write("No data available for the selected filters.")
-if __name__ == "__main__":
-    main()
