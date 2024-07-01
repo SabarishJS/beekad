@@ -93,7 +93,7 @@ st.title("Cricket Ball Trajectory Plotter")
 
 # Upload CSV file
 
-if uploaded_file:
+    
     data = pd.read_csv('NewData.csv')
 
     # Date filter
