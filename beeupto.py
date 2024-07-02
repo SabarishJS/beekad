@@ -103,6 +103,7 @@ if uploaded_file:
     start_date, end_date = st.date_input("Select date range:", [data['Date'].min(), data['Date'].max()])
     filtered_data = data[(data['Date'] >= pd.to_datetime(start_date)) & (data['Date'] <= pd.to_datetime(end_date))]
 
+    # Match Type Filter
     match_type_dict = {
         1: "Test Match", 2: "One-Day International", 3: "Twenty20 International", 
         4: "First Class Match", 5: "List A Match", 6: "Twenty20 Match", 7: "Others", 
